@@ -9,6 +9,10 @@ print(contents)
 
 response = bs4.BeautifulSoup(contents.text, "html.parser")
 data = response.find_all('tr', 'table_highlight')
+judul = response.find('small')
+respon_bulan = response.find_all('b')
+
+bulan = respon_bulan[0]
 data = data[0]
 
 # membuat variabel dictionary
@@ -23,6 +27,16 @@ for d in data:
         sholat['ashar'] = d.get_text()
     elif i == 4:
         sholat['maghrib'] = d.get_text()
-
+    elif i == 5:
+        sholat['isya'] = d.get_text()
     i += 1
-print(sholat['subuh'])
+
+print("=============== Jadwal Sholat ============== ")
+print(judul.get_text())
+print("Bulan : ",bulan.get_text())
+print('=============================================')
+print("Shubuh :", sholat['subuh'])
+print("Zuhur :", sholat['zuhur'])
+print("Ashar :", sholat['ashar'])
+print("Maghrib :", sholat['maghrib'])
+print("Isya :", sholat['isya'])
