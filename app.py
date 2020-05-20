@@ -5,7 +5,10 @@ url = 'https://jadwalsholat.pkpu.or.id/?id=278'
 contents = requests.get(url)
 
 # jika menampilkan output 200 maka OK
-print(contents)
+if contents.reason == 'OK':
+    print("koneksi ke web pkpu terhubung")
+else:
+    print("koneksi ke website pkpu gagal terhubung")
 
 response = bs4.BeautifulSoup(contents.text, "html.parser")
 data = response.find_all('tr', 'table_highlight')
@@ -19,7 +22,9 @@ data = data[0]
 sholat = {}
 i = 0
 for d in data:
-    if i == 1:
+    if i == 0:
+        sholat['tanggal'] = d.get_text()
+    elif i == 1:
         sholat['subuh'] = d.get_text()
     elif i == 2:
         sholat['zuhur'] = d.get_text()
@@ -33,7 +38,8 @@ for d in data:
 
 print("=============== Jadwal Sholat ============== ")
 print(judul.get_text())
-print("Bulan : ",bulan.get_text())
+print("Bulan : ", bulan.get_text())
+print("tanggal : ", sholat['tanggal'])
 print('=============================================')
 print("Shubuh :", sholat['subuh'])
 print("Zuhur :", sholat['zuhur'])
